@@ -45,7 +45,7 @@ const Register = () => {
                         <Form.Control type="text" value={name} onChange={(e)=>setName(e.target.value)}/>
                     </Form.Group>
                     <Form.Group className="mb-3" >
-                        <Form.Label>Email address</Form.Label>
+                        <Form.Label>Select Image</Form.Label>
                         <Form.Control type="file" onChange={(e)=>setFile(e.target.files[0])} />
                     </Form.Group>
 
