@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
     },
     viewCount: {
         type: Number,
-        default: 1 // Initialize viewCount to 1 by default
+        default: 0
     }
 });
 

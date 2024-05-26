@@ -1,5 +1,8 @@
 const express = require("express");
 const router = new express.Router();
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 const multer = require("multer");
 const cloudinary = require("../helper/cloudinaryconfig");
 const moment = require("moment");
@@ -89,26 +92,23 @@ router.get("/getdata",async(req,res)=>{
         
     }
 })
-
-router.patch("/update-viewcount/:id", async (req, res) => {
+  
+// increment view of post
+router.post('/incrementview/:id', async (req, res) => {
     try {
-      const { id } = req.params;
-      const updatedUser = await users.findByIdAndUpdate(
-        id,
-        { $inc: { viewCount: 1 } },
-        { new: true } // Return the updated document
-      );
-  
-      if (!updatedUser) {
-        return res.status(404).json({ message: "Image not found" });
-      }
-  
-      res.status(200).json(updatedUser);
+        const user = await users.findById(req.params.id);
+        // console.log(user);
+        if (user) {
+            user.viewCount += 1;
+            await user.save();
+            res.status(200).json({ updatedViewCount: user.viewCount });
+        } else {
+            res.status(404).json({ message: 'User not found' });
+        }
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Error updating view count" });
+        console.error("Internal Server Error: ", error); // Log the error for debugging
+        res.status(500).json({ message: 'Internal Server Error', error });
     }
-  });
-  
+});
 
 module.exports = router;
